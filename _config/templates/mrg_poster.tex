@@ -1,0 +1,217 @@
+% !TeX root = ../../MRG41/MRG41_01_poster.tex
+% 顶部组织名保留原有的 4 点字距，并随全文字距一起调整。
+\pgfmathsetmacro{\OrganizerLetterSpacing}{4+\GlobalLetterSpacing}
+\pdfstringdefDisableCommands{\def\\{ }}
+\hypersetup{
+    hidelinks,
+    pdftitle={\EventName\space\SessionNumber\space—\space\PaperTitle},
+    pdfauthor={\OrganizerName},
+    pdfsubject={\PresenterName, \PresenterAffiliation; \EventDate; \EventTime}}
+
+% 内部派生尺寸和细节间距；通常无需修改。
+\newlength{\ContentWidth}
+\setlength{\ContentWidth}{\dimexpr\PosterWidth-2\SideMargin\relax}
+\newlength{\PresenterAffiliationGap}
+\setlength{\PresenterAffiliationGap}{6mm}
+\newlength{\DateWeekdayGap}
+\setlength{\DateWeekdayGap}{4mm}
+\newlength{\WeekdayTimeGap}
+\setlength{\WeekdayTimeGap}{5mm}
+\newcommand{\eventPrimary}{\normalfont\type{\EventPrimarySize}\medium\color{Ink}}
+\newcommand{\eventSecondary}{\normalfont\type{\EventSecondarySize}\color{Muted}}
+\newcommand{\eventLabel}{\normalfont\type{\EventLabelSize}\medium\color{Muted}}
+
+% 按输入顺序编号：1–2 位作者纵排；3 位及以上每行两位。
+\ExplSyntaxOn
+\seq_new:N \g_mrg_authors_seq
+\dim_new:N \l_mrg_author_width_dim
+\NewDocumentCommand{\AddPaperAuthor}{m m}
+    {\seq_gput_right:Nn \g_mrg_authors_seq {{#1}{#2}}}
+\cs_new_protected:Npn \mrg_author_card:nnn #1#2#3
+    {
+        \begin{minipage}[t]{\l_mrg_author_width_dim}
+            \raggedright\parindent=0pt
+            {
+                \fontsize{\AuthorNameFontSize}{\dimexpr\AuthorNameFontSize pt+3pt\relax}
+                \selectfont\medium\color{white}
+                \int_eval:n {#1}.\hspace{0.5em}#2\par
+            }
+            \vspace{1mm}
+            {
+                \fontsize{\AuthorAffiliationFontSize}{\dimexpr\AuthorAffiliationFontSize pt+3pt\relax}
+                \selectfont\color{Pale}#3\par
+            }
+        \end{minipage}
+    }
+\cs_new_protected:Npn \mrg_author_item:nn #1#2
+    {\mrg_author_card:nnn {#1} #2}
+\cs_new_protected:Npn \mrg_author_at:n #1
+    {\exp_args:Nne \mrg_author_item:nn {#1}{\seq_item:Nn \g_mrg_authors_seq {#1}}}
+\NewDocumentCommand{\RenderPaperAuthors}{}
+    {
+        \int_compare:nNnTF {\seq_count:N \g_mrg_authors_seq} < {3}
+            {
+                \dim_set:Nn \l_mrg_author_width_dim {\linewidth}
+                \seq_map_indexed_inline:Nn \g_mrg_authors_seq
+                    {
+                        \noindent\mrg_author_card:nnn {##1} ##2\par
+                        \int_compare:nNnT {##1} < {\seq_count:N \g_mrg_authors_seq}
+                            {\vspace{\AuthorRowGap}}
+                    }
+            }
+            {
+                \dim_set:Nn \l_mrg_author_width_dim {(\linewidth-\AuthorColumnGap)/2}
+                \int_step_inline:nnnn {1}{2}{\seq_count:N \g_mrg_authors_seq}
+                    {
+                        \noindent\hbox to\linewidth
+                            {
+                                \mrg_author_at:n {##1}\hspace{\AuthorColumnGap}
+                                \int_compare:nNnT {##1+1} < {\seq_count:N \g_mrg_authors_seq+1}
+                                    {\mrg_author_at:n {##1+1}}
+                                \hfil
+                            }\par
+                        \int_compare:nNnT {##1+1} < {\seq_count:N \g_mrg_authors_seq}
+                            {\vspace{\AuthorRowGap}}
+                    }
+            }
+    }
+\ExplSyntaxOff
+\PaperAuthors
+
+% 先测量内容，再计算模块边界和整张海报高度。
+\newsavebox{\ModuleTwoBox}
+\newsavebox{\ModuleThreeBox}
+\newsavebox{\ModuleFourBox}
+\newlength{\HeaderHeight}
+\setlength{\HeaderHeight}{48mm}
+\newlength{\ModuleTwoHeight}
+\newlength{\ModuleThreeHeight}
+\newlength{\ModuleFourHeight}
+\newlength{\ModuleThreeTop}
+\newlength{\ModuleFourTop}
+\newlength{\PosterHeight}
+\setlength{\parindent}{0pt}
+
+% 内容测量
+% 保存盒子之间不能产生普通空格，因此这些行尾的 % 必须保留。
+\begin{document}%
+%
+% 模块 2：论文标题、作者与期刊。
+\sbox{\ModuleTwoBox}{%
+    \begin{minipage}{\ContentWidth}%
+        \parindent=0pt\parskip=0pt\raggedright\color{white}%
+        {\fontsize{\PaperTitleFontSize}{\dimexpr\PaperTitleFontSize pt+4pt\relax}%
+            \selectfont\medium\PaperTitle\par}%
+        \vspace{\ContentGap}%
+        {\fontsize{\PaperSubtitleFontSize}{\dimexpr\PaperSubtitleFontSize pt+5pt\relax}%
+            \selectfont\PaperSubtitle\par}%
+        \vspace{\ContentGap}%
+        \RenderPaperAuthors%
+        \vspace{\ContentGap}%
+        {\fontsize{\MetadataFontSize}{\dimexpr\MetadataFontSize pt+4pt\relax}%
+            \selectfont\color{Pale}\PaperYear\hspace{1em}\PaperJournal\par}%
+    \end{minipage}%
+}%
+%
+% 模块 3：摘要两端对齐，允许自动断词；关键词共用同级分隔符。
+\sbox{\ModuleThreeBox}{%
+    \begin{minipage}{\ContentWidth}%
+        \parindent=0pt\parskip=0pt\color{Ink}%
+        {\fontsize{13}{16}\selectfont\medium\color{Blue}\AbstractLabel\par}%
+        \vspace{\ContentGap}%
+        {\fontsize{\AbstractFontSize}{\dimexpr\AbstractFontSize pt*13/10\relax}%
+            \selectfont\hyphenpenalty=50\tolerance=1000\PaperAbstract\par}%
+        \vspace{\ContentGap}%
+        {\fontsize{\KeywordFontSize}{\dimexpr\KeywordFontSize pt+4pt\relax}%
+            \selectfont\color{Muted}\PaperKeywords\par}%
+    \end{minipage}%
+}%
+%
+% 模块 4：各行共用字号与基线；房间号、会议号共用左边界。
+\sbox{\ModuleFourBox}{%
+    \begin{tikzpicture}[
+        every node/.style={anchor=base west, inner sep=0pt, outer sep=0pt}
+    ]%
+        \pgfmathsetlengthmacro{\EventPitch}{\EventPrimarySize pt+\EventRowGap}%
+        \pgfmathsetlengthmacro{\EventSecond}{2*\EventPitch}%
+        \pgfmathsetlengthmacro{\EventThird}{3*\EventPitch}%
+        \pgfmathsetlengthmacro{\EventCodeX}{\VenueValueX mm-\SideMargin}%
+        %
+        % 报告人：姓名与单位。
+        \node[font=\eventLabel] at (0,0) {\PresenterLabel};%
+        \node[font=\eventPrimary] (presenter)
+            at (\LabelColumnWidth,0) {\PresenterName};%
+        \node[font=\eventSecondary, xshift=\PresenterAffiliationGap]
+            at (presenter.base east) {\PresenterAffiliation};%
+        %
+        % 时间：日期与时间同字号，星期视觉弱化。
+        \node[font=\eventLabel] at (0,-\EventPitch) {\ScheduleLabel};%
+        \node[font=\eventPrimary] (date)
+            at (\LabelColumnWidth,-\EventPitch) {\EventDate};%
+        \node[font=\eventSecondary, xshift=\DateWeekdayGap] (weekday)
+            at (date.base east) {\EventWeekday};%
+        \node[font=\eventPrimary, xshift=\WeekdayTimeGap]
+            at (weekday.base east) {\EventTime};%
+        %
+        % 线下地点。
+        \node[font=\eventLabel] at (0,-\EventSecond) {\LocationLabel};%
+        \node[font=\eventSecondary]
+            at (\LabelColumnWidth,-\EventSecond) {\LocationName};%
+        \node[font=\eventPrimary] at (\EventCodeX,-\EventSecond) {\LocationRoom};%
+        %
+        % 线上地点。
+        \node[font=\eventLabel] at (0,-\EventThird) {\OnlineLabel};%
+        \node[font=\eventSecondary]
+            at (\LabelColumnWidth,-\EventThird) {\OnlinePlatform};%
+        \node[font=\eventPrimary] at (\EventCodeX,-\EventThird) {\OnlineMeetingID};%
+    \end{tikzpicture}%
+}%
+%
+% 模块边界：实际内容高度加统一留白，整张海报只固定宽度。
+\setlength{\ModuleTwoHeight}{%
+    \dimexpr\ht\ModuleTwoBox+\dp\ModuleTwoBox+2\ModulePadding\relax}%
+\setlength{\ModuleThreeHeight}{%
+    \dimexpr\ht\ModuleThreeBox+\dp\ModuleThreeBox+2\ModulePadding\relax}%
+\setlength{\ModuleFourHeight}{%
+    \dimexpr\ht\ModuleFourBox+\dp\ModuleFourBox+2\ModulePadding\relax}%
+\setlength{\ModuleThreeTop}{\dimexpr\HeaderHeight+\ModuleTwoHeight\relax}%
+\setlength{\ModuleFourTop}{\dimexpr\ModuleThreeTop+\ModuleThreeHeight\relax}%
+\setlength{\PosterHeight}{\dimexpr\ModuleFourTop+\ModuleFourHeight\relax}%
+\typeout{MRG WIDTH=\the\PosterWidth; HEIGHT=\the\PosterHeight}%
+\typeout{MRG MODULE4 HEIGHT=\the\ModuleFourHeight}%
+%
+% 最终画布：先绘制底色，再按测量结果放置内容。
+\begin{tikzpicture}[
+    every node/.style={inner sep=0pt, outer sep=0pt, anchor=base west, text=Ink}
+]
+    % 模块 1：白底活动标识。
+    \path[use as bounding box] (0,0) rectangle (\PosterWidth,-\PosterHeight);
+    \fill[white] (0,0) rectangle (\PosterWidth,-\HeaderHeight);
+    \node[
+        font=\type{12}\medium\addfontfeatures{LetterSpace=\OrganizerLetterSpacing},
+        text=Muted
+    ] at (\SideMargin,-13mm) {\OrganizerName};
+    \node[font=\type{\EventNameFontSize}\medium]
+        at (\SideMargin,-29mm) {\EventName};
+    \node[font=\type{14}\medium, text=Blue]
+        at (\SideMargin,-40mm) {\SessionLabel\space\SessionNumber};
+    \node[anchor=north east]
+        at (\dimexpr\PosterWidth-\SideMargin\relax,-11mm)
+        {\includegraphics[width=\LogoWidth]{\LogoPath}};
+
+    % 模块 2：深蓝论文区。
+    \fill[Blue] (0,-\HeaderHeight) rectangle (\PosterWidth,-\ModuleThreeTop);
+    \node[anchor=north west, yshift=-\ModulePadding]
+        at (\SideMargin,-\HeaderHeight) {\usebox{\ModuleTwoBox}};
+
+    % 模块 3：浅蓝摘要区。
+    \fill[Mist] (0,-\ModuleThreeTop) rectangle (\PosterWidth,-\ModuleFourTop);
+    \node[anchor=north west, yshift=-\ModulePadding]
+        at (\SideMargin,-\ModuleThreeTop) {\usebox{\ModuleThreeBox}};
+
+    % 模块 4：白底活动区。
+    \fill[white] (0,-\ModuleFourTop) rectangle (\PosterWidth,-\PosterHeight);
+    \node[anchor=north west, yshift=-\ModulePadding]
+        at (\SideMargin,-\ModuleFourTop) {\usebox{\ModuleFourBox}};
+\end{tikzpicture}
+\end{document}

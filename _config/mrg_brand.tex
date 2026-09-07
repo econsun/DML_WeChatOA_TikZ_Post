@@ -1,0 +1,30 @@
+% !TeX root = ../MRG41/MRG41_01_poster.tex
+%
+% 全项目共用：文字间距、品牌配色、固定标签和校徽路径。
+% 根文件声明由构建工具更新，无需随日期前缀手动修改。
+
+% 文字间距：字距单位为 0.01 em；词距为普通空格宽度的倍数。
+\newcommand{\GlobalLetterSpacing}{1}   % 1 为略微加宽，负数为收紧
+\newcommand{\GlobalWordSpacing}{1.5}   % 1 为原宽度，1.5 为增加 50%
+% 词距不改变列距或手动留白；摘要两端对齐时，空格仍会自动伸缩。
+
+% 颜色：只填写六位 HTML 色值，不加 #。
+\definecolor{Blue}{HTML}{003C88}        % 论文区深蓝底
+\definecolor{Mist}{HTML}{F1F5F8}        % 摘要区、方封面浅蓝底
+\definecolor{Ink}{HTML}{102B47}         % 白底上的主信息
+\definecolor{Muted}{HTML}{3E566D}       % 白底上的次信息
+\definecolor{Pale}{HTML}{D3E4F3}        % 深蓝底上的次信息
+
+% 活动名称与固定标签。
+\newcommand{\OrganizerName}{DEEPMACRO LAB}
+\newcommand{\EventName}{Macro Reading Group}
+\newcommand{\SessionLabel}{SESSION}
+\newcommand{\AbstractLabel}{ABSTRACT}
+
+\newcommand{\PresenterLabel}{PRESENTER}
+\newcommand{\ScheduleLabel}{SCHEDULE}
+\newcommand{\LocationLabel}{LOCATION}
+\newcommand{\OnlineLabel}{ONLINE ID}
+
+% 资源路径以每期文件夹为基准；不写本机或 iCloud 的绝对路径。
+\newcommand{\LogoPath}{../_config/assets/xmu-emblem.pdf}

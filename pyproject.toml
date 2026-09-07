@@ -1,0 +1,12 @@
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+cache-dir = "_build/ruff_cache"
+extend-exclude = ["_build", "_output", "_config/assets"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "PLW1510"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

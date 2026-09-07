@@ -1,0 +1,59 @@
+{
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk (XeLaTeX + SyncTeX)",
+            "tools": [
+                "latexmk-xelatex-synctex"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk-xelatex-synctex",
+            "command": "python3",
+            "cwd": "%DIR%",
+            "args": [
+                "../_scripts/build_mrg.py",
+                "editor",
+                "--source",
+                "%DOCFILE_EXT%",
+                "--directory",
+                "%DIR%"
+            ]
+        }
+    ],
+    "latex-workshop.latex.outDir": "%DIR%/../_output/MRG_output/PDF",
+    "latex-workshop.latex.recipe.default": "first",
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.view.pdf.internal.synctex.keybinding": "double-click",
+    "latex-workshop.synctex.afterBuild.enabled": true,
+    "files.exclude": {
+        "_build": true,
+        "**/__pycache__": true,
+        "**/.ruff_cache": true,
+        ".DS_Store": true,
+        "requirements.txt": true,
+        "Makefile": true,
+        "pyproject.toml": true,
+        ".editorconfig": true,
+        "README.md": true,
+        ".gitignore": true,
+        "**/*.synctex.gz": true
+    },
+    "latex-workshop.latex.auxDir": "%DIR%/../_build/MRG_build",
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "search.exclude": {
+        "requirements.txt": false,
+        "Makefile": false,
+        "pyproject.toml": false,
+        ".editorconfig": false,
+        "README.md": false,
+        ".gitignore": false
+    }
+}

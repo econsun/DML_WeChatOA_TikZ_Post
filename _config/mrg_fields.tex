@@ -1,0 +1,34 @@
+% !TeX root = ../MRG41/MRG41_01_poster.tex
+%
+% 成组填写信息的命令
+% 仅简化填写方式；模板继续使用原来的内部宏名。
+
+% 论文发表信息：年份、期刊。
+\newcommand{\Publication}[2]{%
+    \def\PaperYear{#1}%
+    \def\PaperJournal{#2}%
+}
+
+% 报告人信息：姓名、单位。
+\newcommand{\Presenter}[2]{%
+    \def\PresenterName{#1}%
+    \def\PresenterAffiliation{#2}%
+}
+
+% 活动日期：日期、星期；时间仍独立填写。
+\newcommand{\EventDay}[2]{%
+    \def\EventDate{#1}%
+    \def\EventWeekday{#2}%
+}
+
+% 线下地点：楼名、房间号。
+\newcommand{\Location}[2]{%
+    \def\LocationName{#1}%
+    \def\LocationRoom{#2}%
+}
+
+% 线上地点：会议平台、会议号。
+\newcommand{\OnlineMeeting}[2]{%
+    \def\OnlinePlatform{#1}%
+    \def\OnlineMeetingID{#2}%
+}

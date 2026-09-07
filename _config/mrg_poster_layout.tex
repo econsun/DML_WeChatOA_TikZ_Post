@@ -1,0 +1,33 @@
+% !TeX root = ../MRG41/MRG41_01_poster.tex
+%
+% 竖版海报：主要字号与距离
+% 字号单位为 pt；长度必须带 mm 等单位。行高和总高度由模板自动计算。
+
+% 论文与摘要字号。
+\newcommand{\EventNameFontSize}{26}
+\newcommand{\PaperTitleFontSize}{36}
+\newcommand{\PaperSubtitleFontSize}{20}
+\newcommand{\AuthorNameFontSize}{16}
+\newcommand{\AuthorAffiliationFontSize}{13}
+\newcommand{\AbstractFontSize}{15}
+\newcommand{\MetadataFontSize}{14}
+\newcommand{\KeywordFontSize}{13}
+
+% 模块 4：同级信息使用同一字号。
+\newcommand{\EventPrimarySize}{18}    % 姓名、日期、时间、房间号、会议号
+\newcommand{\EventSecondarySize}{15}  % 单位、星期、楼名、会议平台
+\newcommand{\EventLabelSize}{12}      % 左侧属性标签
+
+% 整体尺寸与模块留白。
+\newlength{\PosterWidth}      \setlength{\PosterWidth}{210mm}
+\newlength{\SideMargin}       \setlength{\SideMargin}{16mm}
+\newlength{\ModulePadding}    \setlength{\ModulePadding}{10mm}   % 模块上下内边距
+\newlength{\ContentGap}       \setlength{\ContentGap}{5mm}       % 内容组间距
+\newlength{\EventRowGap}      \setlength{\EventRowGap}{6mm}      % 活动行间附加间距
+\newlength{\AuthorRowGap}     \setlength{\AuthorRowGap}{3mm}
+\newlength{\AuthorColumnGap}  \setlength{\AuthorColumnGap}{8mm}
+\newlength{\LogoWidth}        \setlength{\LogoWidth}{26mm}
+
+% 活动区横向位置；VenueValueX 仅填毫米数，减小会一起左移房间号与会议号。
+\newlength{\LabelColumnWidth}  \setlength{\LabelColumnWidth}{44mm}
+\newcommand{\VenueValueX}{106}

@@ -1,0 +1,75 @@
+% !TeX root = ../../MRG41/MRG41_02_cover.tex
+%
+% 公众号封面母版
+% 只导出 combined 母版，保留接缝安全延展，不再生成两个独立裁切版本。
+
+% 作者只显示姓名，顺序与竖版海报一致。
+\ExplSyntaxOn
+\seq_new:N \g_cover_authors_seq
+\NewDocumentCommand{\AddPaperAuthor}{m m}
+    {\seq_gput_right:Nn \g_cover_authors_seq {#1}}
+\PaperAuthors
+\NewDocumentCommand{\CoverAuthors}{}
+    {\seq_use:Nn \g_cover_authors_seq {\hspace{0.6em}·\hspace{0.6em}}}
+\ExplSyntaxOff
+
+% 几何边界：以 100 mm 高母版计算，再整体缩放。
+\pgfmathsetmacro{\WideWidth}{100*\CoverWideRatio}
+\pgfmathsetmacro{\JoinX}{\WideWidth+\CoverJoinSafety}
+\pgfmathsetmacro{\SquareX}{\WideWidth+2*\CoverJoinSafety}
+\pgfmathsetmacro{\FullWidth}{\SquareX+100}
+\pgfmathsetmacro{\CoverScale}{\CoverHeight/100}
+\pgfmathsetlengthmacro{\TitleWidth}{(\WideWidth-2*\CoverInset)*1mm}
+
+\begin{document}
+\begin{tikzpicture}[
+    x=1mm,
+    y=1mm,
+    scale=\CoverScale,
+    transform shape,
+    every node/.style={inner sep=0pt, outer sep=0pt, anchor=base west}
+]
+    \path[use as bounding box] (0,0) rectangle (\FullWidth,-100);
+
+    % 长封面：左上期刊，主体论文，右下组织名称，底部单行活动信息。
+    \fill[Blue] (0,0) rectangle (\JoinX,-88);
+    \fill[white] (0,-88) rectangle (\JoinX,-100);
+
+    \node[text=Pale, font=\type{12}\medium] at (\CoverInset,-13)
+        {\PaperYear\hspace{1em}\PaperJournal};
+
+    \node[anchor=north west, text=white] at (\CoverInset,-23) {%
+        \begin{minipage}{\TitleWidth}
+            \raggedright
+            \fontsize{\CoverTitleSize}{\dimexpr\CoverTitleSize pt+3pt\relax}
+            \selectfont\medium
+            \def\\{\space}\PaperTitle\par
+        \end{minipage}%
+    };
+    \node[text=white, font=\type{\CoverSubtitleSize}]
+        at (\CoverInset,-64) {\PaperSubtitle};
+    \node[text=Pale, font=\type{\CoverAuthorSize}\medium]
+        at (\CoverInset,-79) {\CoverAuthors};
+    \node[anchor=base east, text=Pale, font=\type{\CoverBrandSize}\medium]
+        at (\WideWidth-\CoverInset,-79)
+        {\OrganizerName\hspace{1.2em}\EventName};
+
+    \node[text=Ink, font=\type{\CoverFooterSize}\medium] at (\CoverInset,-95.5) {%
+        \PresenterName\hspace{\CoverFooterGap}%
+        \EventDate\hspace{\CoverFooterGap}%
+        \EventTime\hspace{\CoverFooterGap}%
+        \LocationName\space\LocationRoom\hspace{\CoverFooterGap}%
+        \OnlinePlatform\space\OnlineMeetingID%
+    };
+
+    % 方封面：只保留 MRG、期数与原始 Lab logo。
+    \fill[Mist] (\JoinX,0) rectangle (\FullWidth,-74);
+    \fill[white] (\JoinX,-74) rectangle (\FullWidth,-100);
+
+    \node[text=Blue, font=\type{29}\medium] at (\SquareX+9,-18) {MRG};
+    \node[text=Blue, font=\type{\CoverNumberSize}\medium]
+        at (\SquareX+7,-68) {\SessionNumber};
+    \node[anchor=center] at (\SquareX+50,-87)
+        {\includegraphics[width=86mm]{\CoverLogoPath}};
+\end{tikzpicture}
+\end{document}

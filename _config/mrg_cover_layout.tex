@@ -1,0 +1,22 @@
+% !TeX root = ../MRG41/MRG41_02_cover.tex
+%
+% 公众号封面：比例、字号与安全距离
+% 只导出 combined；长图和方图的接缝两侧各加一段底色延展。
+
+% 几何设置：以 100 mm 高母版为基准，其余尺寸随 CoverHeight 同比缩放。
+\newcommand{\CoverWideRatio}{2.35}  % 长封面宽高比；方封面固定 1:1
+\newcommand{\CoverJoinSafety}{3}    % 每侧安全距离，单位 mm；0 表示关闭
+\newcommand{\CoverHeight}{100}      % 整张图的物理高度，单位 mm
+\newcommand{\CoverInset}{10}        % 内容距边缘的距离，单位 mm
+
+% 文字层级：主标题与副标题分别控制。
+\newcommand{\CoverTitleSize}{36}
+\newcommand{\CoverSubtitleSize}{18}
+\newcommand{\CoverAuthorSize}{15}
+\newcommand{\CoverBrandSize}{11}    % 深蓝区右下角 Lab 与读书会名称
+\newcommand{\CoverFooterSize}{10}   % 底部活动信息
+\newcommand{\CoverNumberSize}{148}  % 方封面大号期数
+
+% 底部间距与 Lab 标识。
+\newcommand{\CoverFooterGap}{2.4em} % 报告人、日期、时间、地点等组间距离
+\newcommand{\CoverLogoPath}{../_config/assets/deepmacro-logo.pdf}

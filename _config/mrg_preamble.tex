@@ -1,0 +1,36 @@
+% !TeX root = ../MRG41/MRG41_01_poster.tex
+%
+% 公共加载顺序
+% 先载入共享设置与字段命令，再读本期内容，最后应用本期可选排版覆盖。
+
+\usepackage{fontspec, tikz, graphicx, hyperref}
+
+\input{../_config/mrg_brand.tex}
+\input{../_config/mrg_poster_layout.tex}
+\input{../_config/mrg_cover_layout.tex}
+\input{../_config/mrg_fields.tex}
+
+% 文件名由本期入口中的 PostNumber 推导，不受文件夹日期前缀影响。
+\edef\PostContentFile{MRG\PostNumber_03_content.tex}
+\edef\PostLayoutFile{MRG\PostNumber_04_layout.tex}
+\input{\PostContentFile}
+\InputIfFileExists{\PostLayoutFile}{}{}
+
+% 全文字体：同一套间距应用于 Regular、Medium 与 SemiBold。
+\setmainfont{Outfit}[
+    Path        = ../_config/assets/fonts/,
+    Extension   = .ttf,
+    UprightFont = *-Regular,
+    BoldFont    = *-SemiBold,
+    LetterSpace = \GlobalLetterSpacing,
+    WordSpace   = \GlobalWordSpacing
+]
+\newfontfamily\medium{Outfit-Medium.ttf}[
+    Path        = ../_config/assets/fonts/,
+    LetterSpace = \GlobalLetterSpacing,
+    WordSpace   = \GlobalWordSpacing
+]
+
+% 公共排版工具：紧行高字号、同级信息分隔符。
+\newcommand{\type}[1]{\fontsize{#1}{#1}\selectfont}
+\newcommand{\sep}{\hspace{0.48em}·\hspace{0.48em}}
