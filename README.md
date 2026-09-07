@@ -5,8 +5,9 @@
 # 项目结构
 
 ```text
+_assets/                  项目材料
+
 _config/
-    assets/                  项目材料
     templates/
         mrg_poster.tex       TikZ 海报主项目
         mrg_cover.tex        TikZ 封面主项目
